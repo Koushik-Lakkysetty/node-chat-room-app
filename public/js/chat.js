@@ -1,5 +1,10 @@
 const socket = io()
 
-socket.on('countUpdated', () => {
-    console.log('count has been updated')
+socket.on('countUpdated', (count) => {
+    console.log('count has been updated', count)
+})
+
+document.querySelector('#increment').addEventListener('click', () => {
+    console.log('Clicked')
+    socket.emit('increment')
 })
