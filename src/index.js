@@ -12,18 +12,23 @@ const publicDirectoryPath = path.join(__dirname, '../public')
 
 app.use(express.static(publicDirectoryPath))
 
-let count = 0
+//let count = 0
 
 //server(emit) -> client(receive) - count updated
 //client(emit) -> server(receive) - increment
 
 io.on('connection', (socket) => {
     console.log('new WebSocket connection')
-    socket.emit('countUpdated', count)
-    socket.on('increment', () => {
-        count++;
-        // socket.emit('countUpdated', count) will reflect changrs to onlt respective client socket
-        io.emit('countUpdated', count) //will reflect changes to all the connections
+
+    // socket.emit('countUpdated', count)
+    // socket.on('increment', () => {
+    //     count++;
+    //     // socket.emit('countUpdated', count) will reflect changrs to onlt respective client socket
+    //     io.emit('countUpdated', count) //will reflect changes to all the connections
+    // })
+    socket.emit('message', 'Welcome!')
+    socket.on('sendMessage', (message) => {
+        io.emit('message', message)
     })
 })
 
