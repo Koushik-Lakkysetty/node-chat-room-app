@@ -27,8 +27,13 @@ io.on('connection', (socket) => {
     //     io.emit('countUpdated', count) //will reflect changes to all the connections
     // })
     socket.emit('message', 'Welcome!')
+    socket.broadcast.emit('message', 'A new User has joined!!')
     socket.on('sendMessage', (message) => {
         io.emit('message', message)
+    })
+
+    socket.on('disconnect', () => {
+        io.emit('message', 'A user has left !')
     })
 })
 
