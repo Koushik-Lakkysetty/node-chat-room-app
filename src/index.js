@@ -22,22 +22,20 @@ app.use(express.static(publicDirectoryPath))
 io.on('connection', (socket) => {
     console.log('new WebSocket connection')
 
-    // socket.emit('countUpdated', count)
-    // socket.on('increment', () => {
-    //     count++;
-    //     // socket.emit('countUpdated', count) will reflect changrs to onlt respective client socket
-    //     io.emit('countUpdated', count) //will reflect changes to all the connections
-    // })
-    socket.emit('message', generateMessage('Welcome!'))
+    socket.on('join', ({ username, room }) => {
+        socket.join(room)
 
-    socket.broadcast.emit('message', generateMessage('A new User has joined!!'))
+        socket.emit('message', generateMessage('Welcome!'))
+        socket.broadcast.to(room).emit('message', generateMessage(`${username} has joined!`))
+    })
+
     socket.on('sendMessage', (message, callback) => {
         const filter = new Filter()
 
         if (filter.isProfane(message)) {
             return callback('Profanity is not allowed!!')
         }
-        io.emit('message', generateMessage(message))
+        io.to('Center City').emit('message', generateMessage(message))
         callback()
     })
 

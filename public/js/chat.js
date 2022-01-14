@@ -11,14 +11,8 @@ const $messages = document.querySelector('#messages')
 const messageTemplate = document.querySelector('#message-template').innerHTML
 const locationTemplate = document.querySelector('#location-template').innerHTML
 
-// socket.on('countUpdated', (count) => {
-//     console.log('count has been updated', count)
-// })
-
-// document.querySelector('#increment').addEventListener('click', () => {
-//     console.log('Clicked')
-//     socket.emit('increment')
-// })
+//options
+const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
 
 socket.on('message', (message) => {
     console.log(message)
@@ -52,7 +46,6 @@ $messageForm.addEventListener('submit', (e) => {
         $messageFormInput.focus()
         //enable
 
-        //console.log('The message was delivered...', ack)
         if (error) {
             return console.log(error)
         }
@@ -79,3 +72,5 @@ $locationButton.addEventListener('click', () => {
         })
     })
 })
+
+socket.emit('join', { username, room })
